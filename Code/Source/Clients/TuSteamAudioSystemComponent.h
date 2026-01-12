@@ -12,14 +12,13 @@
 
 #include "phonon.h"
 
-
 namespace TuSteamAudio
 {
     class TuSteamAudioSystemComponent
         : public AZ::Component
         , protected TuSteamAudioRequestBus::Handler
         , protected AZ::TickBus::Handler
-        , protected TuLabSound::PlayerEffectFactoryBus::MultiHandler
+        , protected Sune::PlayerEffectFactoryBus::MultiHandler
     {
     public:
         AZ_COMPONENT_DECL(TuSteamAudioSystemComponent);
@@ -80,7 +79,7 @@ namespace TuSteamAudio
         }
         ////////////////////////////////////////////////////////////////////////
 
-        TuLabSound::IPlayerAudioEffect* CreateEffect(const AZStd::string& id) override;
+        Sune::IPlayerAudioEffect* CreateEffect(const AZStd::string& id) override;
 
     private:
         IPLContext m_context;

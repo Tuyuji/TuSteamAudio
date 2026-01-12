@@ -11,7 +11,7 @@
 #include <LabSound/core/AudioBus.h>
 #include <LabSound/core/AudioContext.h>
 #include <TuSteamAudio/TuSteamAudioBus.h>
-#include <TuLabSound/Utils.h>
+#include <Sune/Utils.h>
 
 #include <AzCore/Math/MathUtils.h>
 #include <cmath>
@@ -141,7 +141,7 @@ SteamAudioHrtfNode::~SteamAudioHrtfNode()
 void SteamAudioHrtfNode::process(lab::ContextRenderLock& r, int bufferSize)
 {
     AZ_PROFILE_FUNCTION(Audio);
-    if (bufferSize != TuLabSound::TuLabSoundInterface::Get()->GetPeriodSizeInFrames())
+    if (bufferSize != Sune::SuneInterface::Get()->GetPeriodSizeInFrames())
     {
         return;
     }
@@ -169,7 +169,7 @@ void SteamAudioHrtfNode::process(lab::ContextRenderLock& r, int bufferSize)
 
     // Calculate direction from listener to source
     // Convert O3DE position to LabSound/Steam Audio coords using the existing utility
-    auto sourcePos = TuLabSound::ToLab(m_transform.GetTranslation());
+    auto sourcePos = Sune::ToLab(m_transform.GetTranslation());
 
     IPLVector3 sourceIPL = { sourcePos.x, sourcePos.y, sourcePos.z };
     IPLVector3 listenerIPL = { listener->positionX()->value(), listener->positionY()->value(), listener->positionZ()->value() };
@@ -351,8 +351,8 @@ bool SteamAudioHrtf::Initialize(lab::AudioContext& ac)
     m_node = std::make_shared<SteamAudioHrtfNode>(ac);
 
     // Connect to spatialization bus
-    TuLabSound::PlayerEffectSpatializationRequestBus::Handler::BusConnect(GetId());
-    TuLabSound::PlayerEffectImGuiRequestBus::Handler::BusConnect(GetId());
+    Sune::PlayerEffectSpatializationRequestBus::Handler::BusConnect(GetId());
+    Sune::PlayerEffectImGuiRequestBus::Handler::BusConnect(GetId());
     SteamAudioEffectRequestBus::Handler::BusConnect(GetId());
 
     return m_node != nullptr;
@@ -361,8 +361,8 @@ bool SteamAudioHrtf::Initialize(lab::AudioContext& ac)
 void SteamAudioHrtf::Shutdown()
 {
     SteamAudioEffectRequestBus::Handler::BusDisconnect();
-    TuLabSound::PlayerEffectImGuiRequestBus::Handler::BusDisconnect();
-    TuLabSound::PlayerEffectSpatializationRequestBus::Handler::BusDisconnect();
+    Sune::PlayerEffectImGuiRequestBus::Handler::BusDisconnect();
+    Sune::PlayerEffectSpatializationRequestBus::Handler::BusDisconnect();
     m_node = nullptr;
 }
 
@@ -419,7 +419,7 @@ void SteamAudioHrtf::DrawGui()
     ImGui::TextColored(ImVec4(0.5f, 0.8f, 1.0f, 1.0f), "Position Minimap (Top-Down):");
 
     // Get listener position from the audio context
-    auto ac = TuLabSound::TuLabSoundInterface::Get()->GetLabContext();
+    auto ac = Sune::SuneInterface::Get()->GetLabContext();
     if (ac)
     {
         auto listener = ac->listener();
@@ -437,7 +437,7 @@ void SteamAudioHrtf::DrawGui()
         };
 
         // Convert source position to IPL coords
-        auto sourcePos = TuLabSound::ToLab(m_node->m_transform.GetTranslation());
+        auto sourcePos = Sune::ToLab(m_node->m_transform.GetTranslation());
         IPLVector3 sourceIPL = { sourcePos.x, sourcePos.y, sourcePos.z };
 
         // Calculate distance

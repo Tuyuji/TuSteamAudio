@@ -33,7 +33,7 @@ ly_add_target(
             Include
     BUILD_DEPENDENCIES
         INTERFACE
-           Gem::TuLabSound.API
+           Gem::Sune.API
            AZ::AzCore
 )
 
@@ -58,7 +58,7 @@ ly_add_target(
         PUBLIC
             AZ::AzCore
             AZ::AzFramework
-            Gem::TuLabSound.API
+            Gem::Sune.API
             3rdParty::SteamAudio
 )
 
@@ -193,7 +193,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
 
     # Add in CMake dependencies for each gem dependency listed in this gem's gem.json file
     # for the Tools and Builders gem variants
-    o3de_add_variant_dependencies_for_gem_dependencies(GEM_NAME ${gem_name} VARIANTS Tools Builders)
+    o3de_add_variant_dependencies_for_gem_dependencies(GEM_NAME ${gem_name} VARIANTS Tools Builders TuEditor)
 endif()
 
 ################################################################################

@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "TuLabSound/PlayerAudioEffect.h"
+#include "Sune/PlayerAudioEffect.h"
 #include "TuSteamAudio/Types.h"
 #include "phonon.h"
 #include <AzCore/Math/Vector3.h>
@@ -104,9 +104,9 @@ namespace TuSteamAudio
     };
 
     class SteamAudioHrtf
-        : public TuLabSound::IPlayerAudioEffect
-        , public TuLabSound::PlayerEffectSpatializationRequestBus::Handler
-        , public TuLabSound::PlayerEffectImGuiRequestBus::Handler
+        : public Sune::IPlayerAudioEffect
+        , public Sune::PlayerEffectSpatializationRequestBus::Handler
+        , public Sune::PlayerEffectImGuiRequestBus::Handler
         , public SteamAudioEffectRequestBus::Handler
     {
     public:
@@ -122,9 +122,10 @@ namespace TuSteamAudio
         {
             return "SteamAudioHrtf";
         }
-        TuLabSound::PlayerEffectOrder GetProcessingOrder() const override
+
+        Sune::PlayerEffectOrder GetProcessingOrder() const override
         {
-            return TuLabSound::PlayerEffectOrder::Spatializer;
+            return Sune::PlayerEffectOrder::Spatializer;
         }
 
         // PlayerEffectSpatializationRequestBus

@@ -10,7 +10,7 @@
 
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
-#include <TuLabSound/PlayerAudioEffect.h>
+#include <Sune/PlayerAudioEffect.h>
 
 #include "phonon.h"
 #include "Types.h"
@@ -54,5 +54,5 @@ namespace TuSteamAudio
         virtual void SetTuAttenuationSettings(Attenuation::TuAttenuation settings) = 0;
     };
 
-    using SteamAudioEffectRequestBus = AZ::EBus<SteamAudioEffectRequests, TuLabSound::PlayerEffectBusTraits>;
+    using SteamAudioEffectRequestBus = AZ::EBus<SteamAudioEffectRequests, Sune::PlayerEffectBusTraits>;
 } // namespace TuSteamAudio

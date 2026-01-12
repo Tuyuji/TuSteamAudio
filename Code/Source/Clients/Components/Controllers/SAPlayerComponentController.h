@@ -8,7 +8,7 @@
 #include "AzCore/Component/Component.h"
 #include "AzCore/RTTI/ReflectContext.h"
 #include "Clients/Components/Configs/SAPlayerComponentConfig.h"
-#include "TuLabSound/TuLabSoundBus.h"
+#include "Sune/SuneBus.h"
 #include "AzCore/Component/TransformBus.h"
 
 namespace TuSteamAudio
@@ -42,7 +42,7 @@ namespace TuSteamAudio
         AZ::EntityComponentIdPair m_entityComponentIdPair;
         SAPlayerComponentConfig m_config;
 
-        TuLabSound::SoundPlayerId m_playerId;
-        TuLabSound::PlayerEffectId m_hrtfId = TuLabSound::PlayerEffectId();
+        Sune::SoundPlayerId m_playerId;
+        Sune::PlayerEffectId m_hrtfId = Sune::PlayerEffectId();
     };
 } // TuSteamAudio

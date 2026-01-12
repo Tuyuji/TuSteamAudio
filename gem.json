@@ -7,7 +7,7 @@
     "origin": "Reece Hagan",
     "origin_url": "https://tuyuji.com",
     "type": "Code",
-    "summary": "Steam Audio support for TuLabSound.",
+    "summary": "Steam Audio support for Sune.",
     "canonical_tags": [
         "Gem"
     ],
@@ -23,7 +23,7 @@
     "requirements": "",
     "documentation_url": "",
     "dependencies": [
-        "TuLabSound"
+        "Sune"
     ],
     "repo_uri": "",
     "compatible_engines": [

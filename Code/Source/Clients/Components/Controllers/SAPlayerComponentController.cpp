@@ -7,7 +7,7 @@
 #include "SAPlayerComponentController.h"
 
 #include "Clients/Effects/SteamAudioHrtf.h"
-#include "TuLabSound/AudioPlayerBus.h"
+#include "Sune/AudioPlayerBus.h"
 
 using namespace TuSteamAudio;
 
@@ -30,17 +30,17 @@ void SAPlayerComponentController::Reflect(AZ::ReflectContext* context)
 
 void SAPlayerComponentController::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
 {
-    provided.push_back(TuLabSound::AudioSpatializationEffectServiceName);
+    provided.push_back(Sune::AudioSpatializationEffectServiceName);
 }
 
 void SAPlayerComponentController::GetIncompatibleServices(AZ::ComponentDescriptor::DependencyArrayType& incompatible)
 {
-    incompatible.push_back(TuLabSound::AudioSpatializationEffectServiceName);
+    incompatible.push_back(Sune::AudioSpatializationEffectServiceName);
 }
 
 void SAPlayerComponentController::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
 {
-    required.push_back(TuLabSound::AudioPlayerServiceName);
+    required.push_back(Sune::AudioPlayerServiceName);
 }
 
 void SAPlayerComponentController::SetConfiguration(const SAPlayerComponentConfig& config)
@@ -56,17 +56,17 @@ const SAPlayerComponentConfig& SAPlayerComponentController::GetConfiguration() c
 void SAPlayerComponentController::Activate(const AZ::EntityComponentIdPair& entityComponentIdPair)
 {
     m_entityComponentIdPair = entityComponentIdPair;
-    TuLabSound::AudioPlayerRequestBus::EventResult(m_playerId, m_entityComponentIdPair.GetEntityId(), &TuLabSound::AudioPlayerRequestBus::Events::GetPlayerId);
-    if (m_playerId == TuLabSound::SoundPlayerId())
+    Sune::AudioPlayerRequestBus::EventResult(m_playerId, m_entityComponentIdPair.GetEntityId(), &Sune::AudioPlayerRequestBus::Events::GetPlayerId);
+    if (m_playerId == Sune::SoundPlayerId())
     {
-        AZ_Error("TuLabSound", false, "SAPlayerComponentController requires a TuLabSound::AudioPlayerComponent to be present on the same entity.");
+        AZ_Error("Sune", false, "SAPlayerComponentController requires a Sune::AudioPlayerComponent to be present on the same entity.");
         return;
     }
 
-    TuLabSound::TuSoundPlayerRequestBus::EventResult(
+    Sune::SoundPlayerRequestBus::EventResult(
         m_hrtfId,
         m_playerId,
-        &TuLabSound::TuSoundPlayerRequestBus::Events::AddEffect,
+        &Sune::SoundPlayerRequestBus::Events::AddEffect,
         SteamAudioHrtf::RegisterName);
 
     OnConfigurationUpdated();
@@ -82,13 +82,13 @@ void SAPlayerComponentController::Deactivate()
 {
     AZ::TransformNotificationBus::Handler::BusDisconnect();
 
-    if (m_hrtfId != TuLabSound::PlayerEffectId())
+    if (m_hrtfId != Sune::PlayerEffectId())
     {
-        TuLabSound::TuSoundPlayerRequestBus::Event(m_playerId, &TuLabSound::TuSoundPlayerRequestBus::Events::RemoveEffect, m_hrtfId);
+        Sune::SoundPlayerRequestBus::Event(m_playerId, &Sune::SoundPlayerRequestBus::Events::RemoveEffect, m_hrtfId);
     }
 
-    m_playerId = TuLabSound::SoundPlayerId();
-    m_hrtfId = TuLabSound::PlayerEffectId();
+    m_playerId = Sune::SoundPlayerId();
+    m_hrtfId = Sune::PlayerEffectId();
 }
 
 void SAPlayerComponentController::OnConfigurationUpdated()
@@ -99,8 +99,8 @@ void SAPlayerComponentController::OnConfigurationUpdated()
 
 void SAPlayerComponentController::OnTransformChanged(const AZ::Transform& _, const AZ::Transform& transform)
 {
-    TuLabSound::PlayerEffectSpatializationRequestBus::Event(
+    Sune::PlayerEffectSpatializationRequestBus::Event(
         m_hrtfId,
-        &TuLabSound::PlayerEffectSpatializationRequestBus::Events::SetTransform,
+        &Sune::PlayerEffectSpatializationRequestBus::Events::SetTransform,
         transform);
 }

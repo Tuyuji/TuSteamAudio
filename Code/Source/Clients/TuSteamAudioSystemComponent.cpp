@@ -11,7 +11,7 @@
 
 #include <AzCore/Serialization/SerializeContext.h>
 #include <phonon.h>
-#include <TuLabSound/TuLabSoundBus.h>
+#include <Sune/SuneBus.h>
 
 #include "Effects/SteamAudioHrtf.h"
 #include "TuSteamAudio/Allocators.h"
@@ -44,7 +44,7 @@ namespace TuSteamAudio
 
     void TuSteamAudioSystemComponent::GetRequiredServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& required)
     {
-        required.push_back(AZ_CRC_CE("TuLabSoundService"));
+        required.push_back(AZ_CRC_CE("SuneService"));
     }
 
     void TuSteamAudioSystemComponent::GetDependentServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& dependent)
@@ -120,8 +120,8 @@ namespace TuSteamAudio
         }
 
         m_audioSettings = {};
-        m_audioSettings.frameSize = TuLabSound::TuLabSoundInterface::Get()->GetPeriodSizeInFrames();
-        m_audioSettings.samplingRate = TuLabSound::TuLabSoundInterface::Get()->GetLabContext()->sampleRate();
+        m_audioSettings.frameSize = Sune::SuneInterface::Get()->GetPeriodSizeInFrames();
+        m_audioSettings.samplingRate = Sune::SuneInterface::Get()->GetLabContext()->sampleRate();
 
         IPLHRTFSettings hrtfSettings = {};
         hrtfSettings.type = IPL_HRTFTYPE_DEFAULT;
@@ -166,7 +166,7 @@ namespace TuSteamAudio
             return;
         }
 
-        TuLabSound::PlayerEffectFactoryBus::MultiHandler::BusConnect(SteamAudioHrtf::RegisterName);
+        Sune::PlayerEffectFactoryBus::MultiHandler::BusConnect(SteamAudioHrtf::RegisterName);
 
         TuSteamAudioRequestBus::Handler::BusConnect();
         AZ::TickBus::Handler::BusConnect();
@@ -174,7 +174,7 @@ namespace TuSteamAudio
 
     void TuSteamAudioSystemComponent::Deactivate()
     {
-        TuLabSound::PlayerEffectFactoryBus::MultiHandler::BusDisconnect();
+        Sune::PlayerEffectFactoryBus::MultiHandler::BusDisconnect();
         AZ::TickBus::Handler::BusDisconnect();
         TuSteamAudioRequestBus::Handler::BusDisconnect();
 
@@ -192,7 +192,7 @@ namespace TuSteamAudio
     {
         iplSimulatorCommit(m_simulator);
         //get labsound ctx
-        auto labContext = TuLabSound::TuLabSoundInterface::Get()->GetLabContext();
+        auto labContext = Sune::SuneInterface::Get()->GetLabContext();
         if (!labContext)
         {
             return;
@@ -233,7 +233,7 @@ namespace TuSteamAudio
         iplSimulatorRunReflections(m_simulator);*/
     }
 
-    TuLabSound::IPlayerAudioEffect* TuSteamAudioSystemComponent::CreateEffect(const AZStd::string& id)
+    Sune::IPlayerAudioEffect* TuSteamAudioSystemComponent::CreateEffect(const AZStd::string& id)
     {
         if (id == SteamAudioHrtf::RegisterName)
         {
