@@ -233,7 +233,7 @@ namespace TuSteamAudio
         iplSimulatorRunReflections(m_simulator);*/
     }
 
-    Sune::IPlayerAudioEffect* TuSteamAudioSystemComponent::CreateEffect(const AZStd::string& id)
+    Sune::IPlayerAudioEffect* TuSteamAudioSystemComponent::CreateEffect(AZ::Crc32 id)
     {
         if (id == SteamAudioHrtf::RegisterName)
         {

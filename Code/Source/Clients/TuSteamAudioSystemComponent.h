@@ -79,7 +79,7 @@ namespace TuSteamAudio
         }
         ////////////////////////////////////////////////////////////////////////
 
-        Sune::IPlayerAudioEffect* CreateEffect(const AZStd::string& id) override;
+        Sune::IPlayerAudioEffect* CreateEffect(AZ::Crc32 id) override;
 
     private:
         IPLContext m_context;

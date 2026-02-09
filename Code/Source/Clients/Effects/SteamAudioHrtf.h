@@ -110,7 +110,7 @@ namespace TuSteamAudio
         , public SteamAudioEffectRequestBus::Handler
     {
     public:
-        constexpr static const char* RegisterName = "SteamAudioHrtf";
+        constexpr static AZ::Crc32 RegisterName = AZ_CRC_CE("SteamAudioHrtf");
         ~SteamAudioHrtf() override;
         virtual bool Initialize(lab::AudioContext& ac) override;
         virtual void Shutdown() override;
